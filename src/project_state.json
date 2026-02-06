@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build a website to list the user's products.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimal modern storefront wordmark logo (store-logo.dim_512x256.png)\n- Soft textured hero background pattern with warm neutral tones (hero-bg.dim_1920x800.png)\n- Clean placeholder product image illustration with neutral background (product-placeholder.dim_800x800.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-responsive-public-storefront-ui-that-lists-products-and-supports-viewing-product-details",
+      "title": "Create a responsive public storefront UI that lists products and supports viewing product details.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-authenticated-admin-area-where-the-owner-can-add-edit-and-delete-products-including-form-validation-and-success-error-feedback",
+      "title": "Create an authenticated admin area where the owner can add, edit, and delete products, including form validation and success/error feedback.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-wire-frontend-data-fetching-and-mutations-to-the-backend-using-react-query-including-cache-invalidation-so-the-catalog-updates-immediately-after-admin-changes",
+      "title": "Wire frontend data fetching and mutations to the backend using React Query, including cache invalidation so the catalog updates immediately after admin changes.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-modern-visual-theme-for-an-e-commerce-style-product-catalog-colors-typography-spacing-components-and-use-it-consistently-across-public-and-admin-pages",
+      "title": "Apply a coherent, modern visual theme for an e-commerce-style product catalog (colors, typography, spacing, components) and use it consistently across public and admin pages.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-image-assets-to-support-the-storefront-theme-and-ensure-the-frontend-renders-them-from-frontend-public-assets-generated",
+      "title": "Add generated static image assets to support the storefront theme and ensure the frontend renders them from frontend/public/assets/generated.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a website to list the user's products",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Implement backend product data model and CRUD APIs so the site can store and retrieve product listings on the Internet Computer.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add owner-only authorization for product management using Internet Identity principals so only the authenticated site owner can create, edit, or delete products.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Product listing website with catalog and admin management",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

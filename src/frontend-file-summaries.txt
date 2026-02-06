@@ -1,0 +1,23 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining public storefront routes and protected admin routes with proper layout structure.",
+  "frontend/src/components/AppLayout.tsx": "Shared layout wrapper component that provides consistent header, main content area, and footer structure across all pages.",
+  "frontend/src/components/Header.tsx": "Responsive header component with logo, navigation links, and mobile menu support, showing admin link only to authenticated admin users.",
+  "frontend/src/components/Footer.tsx": "Simple footer component with copyright notice and caffeine.ai attribution link.",
+  "frontend/src/components/ProductCard.tsx": "Reusable product card component displaying product image, name, description, brand, price, and view details button for the storefront grid.",
+  "frontend/src/components/ProductImage.tsx": "Product image component with automatic fallback to placeholder image when no imageUrl is provided or image fails to load.",
+  "frontend/src/components/auth/LoginButton.tsx": "Authentication button component handling Internet Identity login/logout with loading states and query cache clearing on logout.",
+  "frontend/src/components/auth/AdminRouteGuard.tsx": "Route guard component that protects admin routes by checking authentication status and admin role, showing appropriate prompts for unauthenticated or unauthorized users.",
+  "frontend/src/components/auth/ProfileSetupModal.tsx": "Modal dialog for first-time user profile setup, prompting authenticated users to enter their name before accessing the application.",
+  "frontend/src/components/admin/ProductForm.tsx": "Reusable form component for creating and editing products with validation for name, brand/owner, and price fields.",
+  "frontend/src/components/admin/AdminEmptyState.tsx": "Empty state component displayed in admin area when no products exist, encouraging users to create their first product.",
+  "frontend/src/pages/StorefrontPage.tsx": "Public storefront page with hero section and product grid, displaying all products with loading and error states.",
+  "frontend/src/pages/ProductDetailsPage.tsx": "Product details page showing full product information including large image, description, price, and brand with back navigation.",
+  "frontend/src/pages/admin/AdminProductsPage.tsx": "Admin dashboard page displaying products in a table with edit and delete actions, plus create new product button.",
+  "frontend/src/pages/admin/AdminProductNewPage.tsx": "Admin page for creating new products using the shared ProductForm component with success/error feedback.",
+  "frontend/src/pages/admin/AdminProductEditPage.tsx": "Admin page for editing existing products with prefilled form data and delete functionality.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for fetching products, user roles, and user profiles from the backend, plus a mutation hook for saving user profiles with proper cache invalidation.",
+  "frontend/src/hooks/useProductMutations.ts": "React Query mutation hooks for creating, updating, and deleting products with automatic cache invalidation.",
+  "frontend/src/lib/format.ts": "Utility function for formatting bigint price values as USD currency strings.",
+  "frontend/src/index.css": "Global styles with warm neutral and terracotta color palette using OKLCH color system for both light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration with custom color tokens, Inter font family, container settings, and extended shadows for the e-commerce theme."
+}

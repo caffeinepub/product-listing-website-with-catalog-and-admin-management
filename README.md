@@ -1,2 +1,3 @@
-# product-listing-website-with-catalog-and-admin-management
-Exported from Caffeine project: Product listing website with catalog and admin management
+## Product listing website with catalog and admin management
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

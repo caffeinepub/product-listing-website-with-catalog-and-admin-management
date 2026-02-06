@@ -1,0 +1,121 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-06T15:42:07.243Z",
+  "summary": "Diff adds a Motoko backend actor with product CRUD and a React/TanStack Router + React Query frontend for storefront/admin, plus theme styling and generated-asset references. However, key BuildRequest requirements around the product schema (currency/imageUrl/timestamps), stable persistence, and owner-only authorization mechanism are not evidenced in the shown diff. The diff also introduces several unrequested features (user profiles/roles, secret-token access control init, and caffeine.ai branding).",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Product record must include at least: id, name, description, price (number), currency (text), imageUrl (optional), and createdAt/updatedAt timestamps.",
+      "reason": "Backend Product type in the diff only contains id, name, description, owner, and price; it lacks currency, imageUrl, and timestamps.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-1",
+      "requirement": "Data persists across canister upgrades using stable storage patterns (no data loss after redeploy/upgrade).",
+      "reason": "The backend uses in-memory `Map.empty` and a mutable `nextProductId` without any visible stable variables or preupgrade/postupgrade hooks in the provided file.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Owner-only authorization for product management using Internet Identity principals, with a defined mechanism to set the initial owner.",
+      "reason": "Create/update/delete are guarded by `AccessControl.hasPermission(..., #admin)` but there is no clear \"owner\" principal concept or initial-owner-setting mechanism shown in `backend/main.mo` (only an admin role check).",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Storefront product grid thumbnails should use the product imageUrl when present, otherwise a placeholder.",
+      "reason": "`ProductCard` passes `imageUrl=\"\"` to `ProductImage` rather than using `product.imageUrl` (and the backend Product type shown does not include imageUrl).",
+      "evidence": [
+        "frontend/src/components/ProductCard.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Admin create/edit form must require currency (and validate it).",
+      "reason": "The admin ProductForm validates name/owner/price but has no currency field/validation; it hard-codes USD in the label and formatting.",
+      "evidence": [
+        "frontend/src/components/admin/ProductForm.tsx",
+        "frontend/src/lib/format.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile APIs (get/save caller profile) and profile setup modal flow.",
+      "reason": "BuildRequest only asks for product catalog/admin management; user profiles are not requested.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/auth/ProfileSetupModal.tsx",
+        "frontend/src/components/auth/AdminRouteGuard.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "description": "Role-based access control with 'admin'/'user' roles and an access-control initialization via a secret URL parameter (`caffeineAdminToken`).",
+      "reason": "BuildRequest specifies owner-only authorization via Internet Identity principals, not a secret-token bootstrap/role system exposed to the frontend via URL params.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/components/auth/AdminRouteGuard.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Footer branding/link to caffeine.ai.",
+      "reason": "Not requested by the BuildRequest and introduces third-party branding in UI.",
+      "evidence": [
+        "frontend/src/components/Footer.tsx"
+      ]
+    },
+    {
+      "description": "Product field named `owner` used as a brand/owner string in the frontend/backed model.",
+      "reason": "BuildRequest product schema requires currency/imageUrl/timestamps; a brand/owner string field is not part of the requested minimum schema (and may confuse \"site owner\" authorization terminology).",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/admin/ProductForm.tsx",
+        "frontend/src/components/ProductCard.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/Footer.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/ProductCard.tsx",
+    "frontend/src/components/ProductImage.tsx",
+    "frontend/src/components/admin/AdminEmptyState.tsx",
+    "frontend/src/components/admin/ProductForm.tsx",
+    "frontend/src/components/auth/AdminRouteGuard.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupModal.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useProductMutations.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/format.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/ProductDetailsPage.tsx",
+    "frontend/src/pages/StorefrontPage.tsx",
+    "frontend/src/pages/admin/AdminProductEditPage.tsx",
+    "frontend/src/pages/admin/AdminProductNewPage.tsx",
+    "frontend/src/pages/admin/AdminProductsPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

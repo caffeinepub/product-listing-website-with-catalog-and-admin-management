@@ -1,0 +1,152 @@
+{
+  "kind": "build_request",
+  "title": "Product listing website with catalog and admin management",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement backend product data model and CRUD APIs so the site can store and retrieve product listings on the Internet Computer.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A product record includes at least: id, name, description, price (as a number), currency (as text), imageUrl (optional), and createdAt/updatedAt timestamps.",
+        "Backend exposes query methods to list products and get a product by id.",
+        "Backend exposes update methods to create, update, and delete products.",
+        "Data persists across canister upgrades using stable storage patterns (no data loss after redeploy/upgrade)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add owner-only authorization for product management using Internet Identity principals so only the authenticated site owner can create, edit, or delete products.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users (or non-owner principals) cannot call create/update/delete product methods (calls are rejected with a clear error).",
+        "Anonymous/public users can still call read-only product listing methods.",
+        "There is a defined mechanism to set the initial owner (e.g., first caller becomes owner or a configurable owner principal)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create a responsive public storefront UI that lists products and supports viewing product details.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Homepage (or main page) shows a product grid/list with product name, price, and thumbnail (uses placeholder image if no imageUrl).",
+        "Clicking a product opens a product details view showing full description, larger image, and price.",
+        "UI works on mobile and desktop layouts."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create an authenticated admin area where the owner can add, edit, and delete products, including form validation and success/error feedback.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin area requires Internet Identity login; logged-out users are prompted to sign in.",
+        "Admin can create a product via a form (name required, price required and must be >= 0, currency required).",
+        "Admin can edit and delete existing products from an admin list/table view.",
+        "All mutations show loading states and display errors from the backend in English."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Wire frontend data fetching and mutations to the backend using React Query, including cache invalidation so the catalog updates immediately after admin changes.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Product list view uses a query and shows a loading state and an error state.",
+        "Create/update/delete operations invalidate/refetch relevant queries so the UI reflects changes without a manual refresh.",
+        "No direct edits are made to files under frontend/src/components/ui or other immutable paths; compose existing components instead."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Apply a coherent, modern visual theme for an e-commerce-style product catalog (colors, typography, spacing, components) and use it consistently across public and admin pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Theme is consistent across pages (buttons, cards, headings, forms).",
+        "Theme does not rely on a blue/purple default palette; choose an alternative palette and apply it consistently.",
+        "Overall layout looks like a 'proper website' (clear header/navigation, content container, and footer or equivalent structure)."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add generated static image assets to support the storefront theme and ensure the frontend renders them from frontend/public/assets/generated.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a proper website so I can list my products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are saved under frontend/public/assets/generated and referenced directly by the frontend.",
+        "Storefront uses the generated logo in the header and uses the generated placeholder image when a product has no imageUrl."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Do not modify any frontend files listed as immutable: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Use English for all user-facing UI text."
+  ],
+  "nonGoals": [
+    "Shopping cart, checkout flow, payments, invoices, shipping, or tax calculations.",
+    "Product image uploads and image storage in the backend (use imageUrl field and/or static placeholders instead).",
+    "Third-party authentication providers beyond Internet Identity."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimal modern storefront wordmark logo (store-logo.dim_512x256.png)",
+      "Soft textured hero background pattern with warm neutral tones (hero-bg.dim_1920x800.png)",
+      "Clean placeholder product image illustration with neutral background (product-placeholder.dim_800x800.png)"
+    ],
+    "edits": []
+  }
+}

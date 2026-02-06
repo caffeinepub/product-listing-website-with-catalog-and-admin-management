@@ -1,0 +1,242 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Product catalog storefront + authenticated admin management (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-3",
+      "summary": "Build a responsive public storefront with product list/grid and product details view.",
+      "acceptanceCriteria": [
+        "Main page shows a product grid/list with product name, price, and thumbnail (uses placeholder image if no imageUrl).",
+        "Selecting a product navigates to a details view with full description, larger image, and price.",
+        "Layout is responsive for mobile and desktop."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell and client-side routing for public storefront routes (list + details) and admin routes; ensure navigation wires to the new views."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared layout with header/nav/content container/footer used by both public and admin pages for a proper website structure."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "create",
+          "description": "Create a header that includes storefront navigation and renders the generated logo from frontend/public/assets/generated/store-logo.dim_512x256.png."
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "create",
+          "description": "Create a simple footer used across the site for consistent structure."
+        },
+        {
+          "path": "frontend/src/pages/StorefrontPage.tsx",
+          "operation": "create",
+          "description": "Implement the public product grid/list view with responsive layout, loading/error states, and thumbnail fallback to frontend/public/assets/generated/product-placeholder.dim_800x800.png."
+        },
+        {
+          "path": "frontend/src/pages/ProductDetailsPage.tsx",
+          "operation": "create",
+          "description": "Implement the product details view (image, name, description, price) and support placeholder image when no imageUrl is available."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "create",
+          "description": "Create a reusable product card for the storefront grid/list using composed existing UI primitives (do not modify frontend/src/components/ui)."
+        },
+        {
+          "path": "frontend/src/components/ProductImage.tsx",
+          "operation": "create",
+          "description": "Create a product image component that safely renders imageUrl when present and otherwise uses frontend/public/assets/generated/product-placeholder.dim_800x800.png."
+        },
+        {
+          "path": "frontend/src/lib/productAdapter.ts",
+          "operation": "create",
+          "description": "Add a frontend-only adapter to map backend Product to UI Product shape (including currency/imageUrl when available) and provide safe display/parse helpers."
+        },
+        {
+          "path": "frontend/src/lib/format.ts",
+          "operation": "create",
+          "description": "Add formatting helpers for displaying bigint price values as user-friendly currency text (English UI)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Create an authenticated admin area (Internet Identity) for adding, editing, and deleting products with validation and feedback.",
+      "acceptanceCriteria": [
+        "Admin area requires Internet Identity login; logged-out users are prompted to sign in.",
+        "Admin can create a product via a form (name required, price required and must be >= 0, currency required).",
+        "Admin can edit and delete existing products from an admin list/table view.",
+        "All mutations show loading states and display errors from the backend in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a login/logout button using the existing Internet Identity hook and clear React Query cache on logout. Use the selected \"authorization\" component guidance for auth UX; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AdminRouteGuard.tsx",
+          "operation": "create",
+          "description": "Create an admin-only route guard that prompts sign-in when logged out and checks admin status when logged in (e.g., via backend role query). Use the selected \"authorization\" component guidance for access-control UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductsPage.tsx",
+          "operation": "create",
+          "description": "Create an admin products list/table view with actions to create, edit, and delete; include loading and error handling in English."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductNewPage.tsx",
+          "operation": "create",
+          "description": "Create an admin 'new product' form with validation (name required, currency required, price >= 0) and mutation feedback (loading/success/error)."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductEditPage.tsx",
+          "operation": "create",
+          "description": "Create an admin 'edit product' form prefilled from product data, supporting update + delete with confirmation and mutation feedback."
+        },
+        {
+          "path": "frontend/src/components/admin/ProductForm.tsx",
+          "operation": "create",
+          "description": "Implement a shared product form component used by new/edit admin pages with client-side validation and consistent styling via composed UI primitives (do not modify frontend/src/components/ui)."
+        },
+        {
+          "path": "frontend/src/components/admin/AdminEmptyState.tsx",
+          "operation": "create",
+          "description": "Add an admin empty-state component to guide owners when no products exist yet, with a call-to-action to create a product."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire admin routes under an authenticated/authorized guard (AdminRouteGuard) and ensure header navigation includes an Admin link (guarded appropriately)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Wire product queries and mutations using React Query with proper loading/error states and cache invalidation.",
+      "acceptanceCriteria": [
+        "Product list view uses a query and shows a loading state and an error state.",
+        "Create/update/delete operations invalidate/refetch relevant queries so the UI reflects changes without a manual refresh.",
+        "No direct edits are made to files under frontend/src/components/ui or other immutable paths; compose existing components instead."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useProducts.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for listing products and fetching a product by id using the existing actor hook; include query keys and enabled guards."
+        },
+        {
+          "path": "frontend/src/hooks/useProductMutations.ts",
+          "operation": "create",
+          "description": "Create React Query mutation hooks for create/update/delete that invalidate/refetch product list/detail queries on success and surface errors in English."
+        },
+        {
+          "path": "frontend/src/pages/StorefrontPage.tsx",
+          "operation": "modify",
+          "description": "Use the product list query hook and render explicit loading and error UI states."
+        },
+        {
+          "path": "frontend/src/pages/ProductDetailsPage.tsx",
+          "operation": "modify",
+          "description": "Use the product-by-id query hook and render explicit loading and error UI states."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductsPage.tsx",
+          "operation": "modify",
+          "description": "Use product list query + delete mutation hooks and ensure deletion invalidates/refetches queries so the admin list and storefront update immediately."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductNewPage.tsx",
+          "operation": "modify",
+          "description": "Use the create mutation hook and ensure it invalidates product list queries; show loading/success/error feedback in English."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductEditPage.tsx",
+          "operation": "modify",
+          "description": "Use product-by-id query + update/delete mutation hooks and ensure cache invalidation updates product detail and list views immediately."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a cohesive, modern e-commerce theme with consistent components and a non-blue/purple palette.",
+      "acceptanceCriteria": [
+        "Theme is consistent across pages (buttons, cards, headings, forms).",
+        "Theme does not rely on a blue/purple default palette; choose an alternative palette and apply it consistently.",
+        "Overall layout looks like a proper website (clear header/navigation, content container, and footer or equivalent structure)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and Tailwind/CSS variable theme tokens (warm neutral + accent palette, not blue/purple), ensuring consistent typography/spacing across storefront and admin."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions (e.g., container, typography defaults, and any custom tokens) to support the chosen non-blue/purple e-commerce palette consistently."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Apply the global theme consistently in the shared layout (container widths, header/footer spacing, and content rhythm) using composed UI primitives (do not modify frontend/src/components/ui)."
+        },
+        {
+          "path": "frontend/src/pages/StorefrontPage.tsx",
+          "operation": "modify",
+          "description": "Apply themed hero/section styling and consistent card/grid spacing for a modern catalog feel."
+        },
+        {
+          "path": "frontend/src/pages/admin/AdminProductsPage.tsx",
+          "operation": "modify",
+          "description": "Ensure admin tables/forms/buttons match the shared theme for visual consistency."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add and wire generated static images (logo, hero background, product placeholder) from frontend/public/assets/generated.",
+      "acceptanceCriteria": [
+        "Generated images are saved under frontend/public/assets/generated and referenced directly by the frontend.",
+        "Storefront uses the generated logo in the header and uses the generated placeholder image when a product has no imageUrl."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/store-logo.dim_512x256.png",
+          "operation": "create",
+          "description": "Add the generated storefront logo asset at the required path so it can be referenced by the header."
+        },
+        {
+          "path": "frontend/public/assets/generated/hero-bg.dim_1920x800.png",
+          "operation": "create",
+          "description": "Add the generated hero background asset at the required path so it can be referenced by the storefront hero section."
+        },
+        {
+          "path": "frontend/public/assets/generated/product-placeholder.dim_800x800.png",
+          "operation": "create",
+          "description": "Add the generated product placeholder asset at the required path so it can be used when products have no imageUrl."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/store-logo.dim_512x256.png in the header branding."
+        },
+        {
+          "path": "frontend/src/pages/StorefrontPage.tsx",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/hero-bg.dim_1920x800.png for the storefront hero background and ensure product cards use the placeholder when no imageUrl exists."
+        },
+        {
+          "path": "frontend/src/components/ProductImage.tsx",
+          "operation": "modify",
+          "description": "Ensure the image fallback uses frontend/public/assets/generated/product-placeholder.dim_800x800.png whenever imageUrl is missing/empty."
+        }
+      ]
+    }
+  ]
+}
